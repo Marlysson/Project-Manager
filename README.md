@@ -33,3 +33,9 @@ Projeto: **Implementação de um simples gerenciador de projetos.**
 
 
 __PS: A funcionalidade de notificações será implementada em versões futuras.__
+
+
+
+## Projeto de classes inicial
+
+![Projeto de classes](https://github.com/Marlysson/Project-Manager/blob/master/Documenta%C3%A7%C3%A3o/Diagrama.png)
