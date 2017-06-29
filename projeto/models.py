@@ -16,9 +16,11 @@ class Funcao(models.Model):
 class Funcionario(models.Model):
 	nome = models.CharField(max_length=100)
 	idade = models.IntegerField()
+	endereco = models.OneToOneField('Endereco',on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.nome
+
 
 class Tarefa(models.Model):
 
@@ -33,20 +35,27 @@ class Tarefa(models.Model):
 	esforco = models.DurationField()
 	data_conclusao = models.DateTimeField(null=True)
 	status = models.CharField(max_length=1,choices=STATUS)
+	projeto = models.ForeignKey(Projeto,on_delete=models.CASCADE,related_name="tarefas")
+	pre_requisito = models.ManyToManyField("self",related_name="pre_requisitos")
 
 	def __str__(self):
 		return "{}, {}".self(self.titulo,self.status)
 
+
 class Checklist(models.Model):
 	descricao = models.CharField(max_length=50)
 	porcentagem_concluida = models.FloatField()
+	tarefa = models.ForeignKey(Tarefa,on_delete=models.CASCADE,related_name="checklists")
+
 
 class Item(models.Model):
 	descricao = models.CharField(max_length=50)
 	status = models.BooleanField(default=False)
+	checklist = models.ForeignKey(Checklist,on_delete=models.CASCADE,related_name="itens")
 
 	def __str__(self):
 		return "{}, {}".format(self.descricao,self.status)
+
 
 class Endereco(models.Model):
 	rua = models.CharField(max_length=50)
