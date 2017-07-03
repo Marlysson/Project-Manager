@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from ..models import Projeto, Funcao, Funcionario, \
                     Endereco, Tarefa, Checklist, \
-                    Equipe, Participacao
+                    Equipe, Participacao, Item
 
 class TestInsercoesModelos(TestCase):
 
@@ -46,9 +46,13 @@ class TestInsercoesModelos(TestCase):
     def test_criar_uma_checklist_com_itens_para_uma_tarefa(self):
         
         checklist = Checklist.objects.create(descricao="Primeiros passos para integrar api",tarefa=self.tarefa)
-        checklist.addItem("Fazer busca inicial de requisitos")
-        checklist.addItem("Concluir requisitos prioritários")
-        checklist.addItem("Enviar para o cliente")
+
+        item1 = Item(descricao="Fazer busca inicial de requisitos")
+        item2 = Item(descricao="Concluir requisitos prioritários")
+        item3 = Item(descricao="Enviar para o cliente")
+
+        for item in [item1,item2,item3]:
+            checklist.addItem(item)
 
         checklist_inserida = Checklist.objects.get(id=1)
 
@@ -90,3 +94,15 @@ class TestInsercoesModelos(TestCase):
         equipe = Equipe.objects.get(id=1)
 
         self.assertEquals(equipe.participantes.count(),2)
+
+    def test_deve_associar_varias_equipes_ao_mesmo_projeto(self):
+
+        marketing = Equipe(nome="Marketing")
+        desenvolvimento = Equipe(nome="Desenvolvimento")
+
+        self.projeto.addEquipe(marketing)
+        self.projeto.addEquipe(desenvolvimento)
+
+        projeto = Projeto.objects.get(id=self.projeto.id)
+        
+        self.assertEquals(projeto.equipes.count(),2)
