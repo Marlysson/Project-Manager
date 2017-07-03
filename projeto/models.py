@@ -4,6 +4,10 @@ from django.db import models
 class Projeto(models.Model):
     nome = models.CharField(max_length=50)
 
+    def addEquipe(self,equipe):
+        equipe.projeto = self
+        equipe.save()
+
     class Meta:
         db_table = "projeto"
 
@@ -24,7 +28,7 @@ class Funcao(models.Model):
 class Funcionario(models.Model):
     nome = models.CharField(max_length=100)
     idade = models.IntegerField()
-    salario = models.DecimalField(max_digits=9,decimal_places=2,null=True)
+    salario = models.DecimalField(max_digits=9,decimal_places=2)
     endereco = models.OneToOneField('Endereco',on_delete=models.CASCADE)
 
     class Meta:
@@ -36,8 +40,12 @@ class Funcionario(models.Model):
 
 class Equipe(models.Model):
     nome = models.CharField(max_length=50)
-    projeto = models.OneToOneField(Projeto,on_delete=models.CASCADE)
+    projeto = models.ForeignKey(Projeto,on_delete=models.CASCADE,
+                                related_name="equipes")
     membros = models.ManyToManyField(Funcionario,through='Participacao')
+
+    def __str__(self):
+        return self.nome
 
     class Meta:
         db_table = "equipe"
@@ -49,6 +57,9 @@ class Participacao(models.Model):
     funcionario = models.ForeignKey(Funcionario,on_delete=models.CASCADE,
                             related_name="participacoes")
     funcao = models.OneToOneField(Funcao)
+
+    def __str__(self):
+        return "{}, {}, {}".format(self.equipe.nome,self.funcionario.nome,self.funcao.nome)
 
     class Meta:
         db_table = "participacao"
@@ -74,7 +85,10 @@ class Tarefa(models.Model):
 
     def concluir(self):
         from datetime import datetime
+        
         self.dataconclusao = datetime.now()
+        self.status = 2
+
         self.save()
 
     class Meta:
@@ -89,9 +103,9 @@ class Checklist(models.Model):
     tarefa = models.ForeignKey(Tarefa,on_delete=models.CASCADE,
                             related_name="checklists")
 
-    def addItem(self,descricao):
-        item = Item.objects.create(descricao=descricao,checklist=self)
-        self.itens.add(item)
+    def addItem(self,item):
+        item.checklist = self
+        item.save()
 
     class Meta:
         db_table = "checklist"
