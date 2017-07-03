@@ -72,6 +72,10 @@ class Tarefa(models.Model):
                                 symmetrical=False,
                                 related_name="pre_requisitos")
 
+    def concluir(self):
+        from datetime import datetime
+        self.dataconclusao = datetime.now()
+
     class Meta:
         db_table = "tarefa"
 
@@ -81,9 +85,12 @@ class Tarefa(models.Model):
 
 class Checklist(models.Model):
     descricao = models.CharField(max_length=50)
-    porcentagem_concluida = models.FloatField()
     tarefa = models.ForeignKey(Tarefa,on_delete=models.CASCADE,
                             related_name="checklists")
+
+    def addItem(self,descricao):
+        item = Item.objects.create(descricao=descricao,checklist=self)
+        self.itens.add(item)
 
     class Meta:
         db_table = "checklist"
