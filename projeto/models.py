@@ -75,6 +75,7 @@ class Tarefa(models.Model):
     def concluir(self):
         from datetime import datetime
         self.dataconclusao = datetime.now()
+        self.save()
 
     class Meta:
         db_table = "tarefa"
