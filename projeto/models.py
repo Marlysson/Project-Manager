@@ -35,6 +35,7 @@ class Funcionario(models.Model):
 
 
 class Equipe(models.Model):
+    nome = models.CharField(max_length=50)
     projeto = models.OneToOneField(Projeto,on_delete=models.CASCADE)
     membros = models.ManyToManyField(Funcionario,through='Participacao')
 
@@ -44,7 +45,7 @@ class Equipe(models.Model):
 
 class Participacao(models.Model):
     equipe = models.ForeignKey(Equipe,on_delete=models.CASCADE,
-                            related_name="participacoes")
+                            related_name="participantes")
     funcionario = models.ForeignKey(Funcionario,on_delete=models.CASCADE,
                             related_name="participacoes")
     funcao = models.OneToOneField(Funcao)
