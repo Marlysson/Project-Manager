@@ -106,3 +106,38 @@ class TestInsercoesModelos(TestCase):
         projeto = Projeto.objects.get(id=self.projeto.id)
         
         self.assertEquals(projeto.equipes.count(),2)
+
+    def test_deve_retornar_a_quantidade_de_membros_no_projeto_envolvendo_todas_as_equipes_dele(self):
+
+        equipe = Equipe.objects.create(nome="Desenvolvimento",projeto=self.projeto)
+
+        funcao_backend = Funcao.objects.create(nome="Backend Developer")
+        funcao_frontend = Funcao.objects.create(nome="FrontEnd Developer")
+
+        funcionario_marlysson = Funcionario.objects.create(nome="Marlysson",idade=21,
+                                salario=2.500,endereco=self.endereco)
+
+        endereco_2 = Endereco.objects.create(rua="Rua 2",bairro="Bairro 2",
+            cidade="Cidade 2",estado="Estado 2")
+
+        funcionario_marcelo = Funcionario.objects.create(nome="Marcelo",idade=20,
+                                salario=2.600,endereco=endereco_2)
+
+        marlysson = {
+            "equipe":equipe,
+            "funcionario":funcionario_marlysson,
+            "funcao":funcao_backend
+        }
+
+        marcelo = {
+            "equipe":equipe,
+            "funcionario":funcionario_marcelo,
+            "funcao":funcao_frontend
+        }
+
+        participacao_1 = Participacao.objects.create(**marlysson)
+        participacao_2 = Participacao.objects.create(**marcelo)
+
+        participacao = Participacao.objects.filter(equipe__projeto=self.projeto.id).count()
+
+        self.assertEquals(participacao,2)

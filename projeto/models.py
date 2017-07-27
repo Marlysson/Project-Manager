@@ -3,7 +3,8 @@ from django.db import models
 
 class Projeto(models.Model):
     nome = models.CharField(max_length=50)
-
+    descricao = models.TextField()
+    
     def addEquipe(self,equipe):
         equipe.projeto = self
         equipe.save()
