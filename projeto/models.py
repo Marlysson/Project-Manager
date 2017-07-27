@@ -16,7 +16,7 @@ class Projeto(models.Model):
         return self.nome
 
 
-class Funcao(models.Model):
+class Cargo(models.Model):
     nome = models.CharField(max_length=50)
 
     class Meta:
@@ -30,7 +30,7 @@ class Funcionario(models.Model):
     nome = models.CharField(max_length=100)
     idade = models.IntegerField()
     salario = models.DecimalField(max_digits=9,decimal_places=2)
-    endereco = models.OneToOneField('Endereco',on_delete=models.CASCADE,null=True)
+    funcao = models.ForeignKey(funcao,on_delete=models.SET_NULL)
 
     class Meta:
         db_table = "funcionario"
@@ -43,27 +43,13 @@ class Equipe(models.Model):
     nome = models.CharField(max_length=50)
     projeto = models.ForeignKey(Projeto,on_delete=models.CASCADE,
                                 related_name="equipes")
-    membros = models.ManyToManyField(Funcionario,through='Participacao')
+    membros = models.ManyToManyField(Funcionario)
 
     def __str__(self):
         return self.nome
 
     class Meta:
         db_table = "equipe"
-
-
-class Participacao(models.Model):
-    equipe = models.ForeignKey(Equipe,on_delete=models.CASCADE,
-                            related_name="participantes")
-    funcionario = models.ForeignKey(Funcionario,on_delete=models.CASCADE,
-                            related_name="participacoes")
-    funcao = models.OneToOneField(Funcao)
-
-    def __str__(self):
-        return "{}, {}, {}".format(self.equipe.nome,self.funcionario.nome,self.funcao.nome)
-
-    class Meta:
-        db_table = "participacao"
 
 
 class Tarefa(models.Model):
@@ -125,16 +111,3 @@ class Item(models.Model):
 
     def __str__(self):
         return "{}, {}".format(self.descricao,self.status)
-
-
-class Endereco(models.Model):
-    rua = models.CharField(max_length=50)
-    bairro = models.CharField(max_length=50)
-    cidade = models.CharField(max_length=50)
-    estado = models.CharField(max_length=50)
-
-    class Meta:
-        db_table = "endereco"
-        
-    def __str__(self):
-        return "{}, {}".format(self.rua,self.bairro)
