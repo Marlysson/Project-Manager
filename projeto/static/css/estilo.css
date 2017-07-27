@@ -1,0 +1,19 @@
+*{
+	margin:0;
+	padding:0;
+}
+
+.title-page{
+	margin-bottom:30px;
+	text-decoration: none;
+}
+
+.row .nav-tabs{
+	margin-bottom:20px;
+}
+
+.breadcrumb{
+	margin:0;
+	padding:0;
+}
+

@@ -1,0 +1,46 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Project-Manager</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/estilo.css' %}">
+</head>
+<body>
+
+<div class="container-fluid
+			col-lg-8 col-lg-offset-2
+			col-md-8 col-md-offset-2
+			col-sm-10 col-sm-offset-1
+			col-xs-10 col-xs-offset-1">
+
+	<div class="header">
+		<h1 class="title-page"><a href="{% url 'index' %}">Project-Manager</a></h1>
+	</div>
+
+	<div class="row">
+		<ul class="nav nav-tabs" role="tablist">
+
+		  <li><a href="#">Home</a></li>
+		  <li><a href="{% url 'projetos' %}">Projetos</a></li>
+		  <li><a href="#">Equipes</a></li>
+		  <li><a href="#">Tarefas</a></li>
+		  <li><a href="#">Funcionários</a></li>
+		  <li><a href="#">Notificações <span class="badge">10</span></a></li>
+		  <li class="pull-right"><a href="#">Perfil</a></li>
+
+		</ul>
+	</div>
+
+		{% block conteudo %}
+
+		{% endblock %}
+
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>
