@@ -5,5 +5,4 @@ class FuncionarioForm(ModelForm):
 
 	class Meta:
 		model = Funcionario
-		fields = ["nome","idade","salario"]
-		exclude = ["endereco"]
+		fields = ["nome","idade","salario","cargo"]

@@ -43,19 +43,12 @@ class Equipe(models.Model):
 
 class Tarefa(models.Model):
 
-    STATUS = (
-        (0,'A fazer'),
-        (1,'Fazendo'),
-        (2,'Feito'),
-    )
-
     titulo = models.CharField(max_length=50)
     descricao = models.CharField(max_length=100)
-    esforco = models.DurationField()
     data_conclusao = models.DateTimeField(null=True)
-    status = models.CharField(max_length=1,choices=STATUS)
     projeto = models.ForeignKey(Projeto,on_delete=models.CASCADE,related_name="tarefas")
-    pre_requisito = models.ManyToManyField("self",
+    responsavel = models.ForeignKey(Funcionario,null=True)
+    pre_requisito = models.ManyToManyField("self",null=True,
                                 symmetrical=False,
                                 related_name="pre_requisitos")
 
@@ -71,7 +64,7 @@ class Tarefa(models.Model):
         db_table = "tarefa"
 
     def __str__(self):
-        return "{}, {}".self(self.titulo,self.status)
+        return "{}, {}".format(self.titulo,self.status)
 
 
 class Checklist(models.Model):
