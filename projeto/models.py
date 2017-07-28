@@ -47,16 +47,35 @@ class Tarefa(models.Model):
     descricao = models.CharField(max_length=100)
     data_conclusao = models.DateTimeField(null=True)
     projeto = models.ForeignKey(Projeto,on_delete=models.CASCADE,related_name="tarefas")
+    horario_de_inicio_atual = models.DateTimeField(null=True)
+    duracao_total = models.DurationField(null=True,default=0)
     responsavel = models.ForeignKey(Funcionario,null=True)
     pre_requisito = models.ManyToManyField("self",null=True,
                                 symmetrical=False,
                                 related_name="pre_requisitos")
 
+    def iniciar(self):
+
+        from datetime import datetime
+
+        self.horario_inicio_atual = datetime.now()
+
+        self.save()
+
     def concluir(self):
         from datetime import datetime
         
         self.dataconclusao = datetime.now()
-        self.status = 2
+        self.duracao_total += datetime.now() - self.dataconclusao
+
+        self.save()
+
+    def pausar(self):
+
+        from datetime import datetime
+        agora = datetime.now()
+
+        self.duracao_total += agora - self.horario_inicio_atual
 
         self.save()
 
