@@ -4,6 +4,7 @@
 <html>
 <head>
 	<title>Project-Manager</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/estilo.css' %}">
 </head>
@@ -25,7 +26,7 @@
 		  <li><a href="{% url 'index' %}">Home</a></li>
 		  <li><a href="{% url 'projetos' %}">Projetos</a></li>
 		  <li><a href="#">Equipes</a></li>
-		  <li><a href="#">Tarefas</a></li>
+		  <li><a href="{% url 'tarefas' %}">Tarefas</a></li>
 		  <li><a href="{% url 'funcionarios' %}">Funcionários</a></li>
 		  <li><a href="#">Notificações <span class="badge">10</span></a></li>
 		  <li class="pull-right"><a href="#">Perfil</a></li>
@@ -41,6 +42,82 @@
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+	$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	});
+</script>
+
+<script type="text/javascript">
+	
+	ha_prerequisitos = document.querySelector(".ativar-pre-requisitos");
+	pre_requisitos = document.querySelector(".pre-requisitos");
+	requisitos = document.querySelectorAll(".requisito");
+	projetos = document.querySelectorAll(".projeto");
+	funcionarios = document.querySelectorAll(".funcionario");
+
+	if (ha_prerequisitos != null){
+		ha_prerequisitos.addEventListener("click",function(){
+			pre_requisitos.classList.toggle("active-pre-requisitos");
+		});
+	}
+
+	// Marcar todos os pré-requisitos selecionados
+	for(i = 0; i < requisitos.length ; i++){
+
+		requisitos[i].addEventListener("click",function(event){
+
+			button = this.previousElementSibling;	
+
+			if (this.checked){
+				button.classList.remove("btn-default");
+				button.classList.add("btn-success");
+			}else{
+				button.classList.add("btn-default");
+				button.classList.remove("btn-success");
+			}
+
+		})
+	}
+
+
+	for(i = 0; i < projetos.length ; i++){
+
+		projetos[i].addEventListener("click",function(){
+			
+
+			button = this.nextElementSibling;
+
+			if (this.checked){
+				button.classList.remove("btn-default");
+				button.classList.add("btn-success");
+			}else{
+				button.classList.add("btn-default");
+				button.classList.remove("btn-success");
+			}
+
+		});
+	}
+	
+	for(i = 0; i < funcionarios.length ; i++){
+
+		funcionarios[i].addEventListener("click",function(){
+			
+			button = this.previousElementSibling;
+
+			if (this.checked){
+				button.classList.remove("btn-default");
+				button.classList.add("btn-success");
+			}else{
+
+			}
+			
+		});
+	}
+
+</script>
+
 
 </body>
 </html>

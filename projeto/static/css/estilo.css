@@ -17,6 +17,30 @@
 	padding:0;
 }
 
-.input-cep{
-	width:30% !important;
+.pre-requisitos{
+	display: none;
+}
+
+.active-pre-requisitos{
+	display: block;
+}
+
+.item-input{
+	margin-bottom:20px;
+}
+
+.projetos,.funcionarios{
+	display: block;
+}
+
+.item-input input[type="checkbox"], .item-input input[type="radio"]{
+	/*display: none;*/
+}
+
+.tarefa a{
+	color:white;
+}
+
+.tarefa a:hover{
+	color:white;
 }

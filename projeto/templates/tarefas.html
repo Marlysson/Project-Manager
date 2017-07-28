@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+    
+    {% for tarefa in tarefas %}	
+        <div class="panel panel-primary tarefa">
+        <div class="panel-heading">
+            <a href="{% url 'tarefa' tarefa.id %}"><strong>{{ tarefa.titulo|capfirst }} </strong></a>
+        </div>
+        <div class="panel-body">{{ tarefa.descricao }}</div>
+        <div class="panel-footer">
+            
+        <ol class="breadcrumb">
+            <li><strong>Responsável:</strong> <span class="badge">{{ tarefa.responsavel.nome }}</span></li>
+            <li><strong>Projeto:</strong> <span class="badge">{{ tarefa.projeto.nome }}</span></li>
+            <li><strong>Requisitos:</strong> <span class="badge">{{ tarefa.pre_requisitos.count }}</span></li>
+            <button class="btn btn-success btn-xs pull-right"><span class="glyphicon glyphicon-play"></span>Iniciar atividade</button>
+        </ol>
+
+
+
+        </div>
+    </div>
+
+    {% empty %}
+        Não há tarefas ainda. Aproveite e insira algumas.
+
+    {% endfor %}
+
+    <button class="btn btn-success btn-sm" data-target="#novo-projeto" data-toggle="modal">
+        Nova tarefa
+    </button>
+
+	<div class="modal fade" id="novo-projeto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Crie um nova tarefa</h4>
+      </div>
+      
+      	<form method="post" action="{% url 'nova_tarefa' %}">
+	      
+	      {% csrf_token %}
+
+			<div class="modal-body">    
+				
+                <div class="item-input">
+    				<label for="titulo">Título:</label>
+    	        	<input type="text" name="titulo" class="form-control">	 				
+                </div>
+
+                <div class="item-input">
+    	        	<label for="descricao">Descrição:</label>
+    	        	<textarea type="text" name="descricao" class="form-control"></textarea>
+                </div>
+
+                {% if tarefas.count > 0 %}
+    			<div class="item-input dependencias">
+	    			<label>Há pré-requisitos?</label>
+	    			<button type="button" class="btn btn-xs btn-primary ativar-pre-requisitos">Sim</button>
+
+                    <div class="pre-requisitos">
+                            
+                        {% for tarefa in tarefas %}
+                            <label for="{{ tarefa.nome|safe }}" class="btn btn-default">{{ tarefa.titulo }}</label>
+
+                            <input type="checkbox" name="pre_requisito" 
+                                   value="{{ tarefa.id }}" id="{{tarefa.nome|safe}}" class="requisito">
+
+                        {% endfor %}
+
+                        
+                    </div>
+
+
+                </div>
+                {% endif %}
+
+    			<div class="item-input">
+
+    				<label>Pertence à qual projeto?</label>
+
+                    <div class="projetos">
+
+    				{% for projeto in projetos %}
+    					
+                        <label
+                            for="{{projeto.nome}}" 
+                            class="btn btn-default projeto">
+                                {{ projeto.nome|truncatechars:19 }}
+                        </label>
+
+    					<input 
+                            type="radio" name="projeto"
+                            value="{{projeto.id}}" id="{{projeto.nome}}">
+
+    				{% endfor %}
+                    </div>
+    			</div>
+
+                <div class="item-input">
+        		  
+                    <label>Associar à: </label>
+
+                    <div class="funcionarios">
+        			{% for funcionario in funcionarios %}
+        				
+        				<label for="{{funcionario.nome|safe}}" type="button"
+                            class="btn btn-default funcionario">
+                                {{ funcionario.nome }}
+                        </label>
+
+        				<input type="radio" name="funcionario"
+                            value="{{funcionario.id}}" id="{{funcionario.nome|safe}}">
+
+        			{% endfor %}
+                    </div>
+
+                </div>
+
+            </div>
+
+			<div class="modal-footer">
+
+			<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+			<button type="submit" class="btn btn-primary">Criar</button>
+
+			</div>
+		  	
+	  	</form>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

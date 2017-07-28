@@ -9,6 +9,7 @@
 		<tr>
 			<td><strong>Nome</strong></td>
 			<td><strong>Idade</strong></td>
+			<td><strong>Cargo</strong></td>
 			<td><strong>Salário</strong></td>
 		</tr>
 
@@ -16,6 +17,7 @@
 			<tr>
 				<td>{{ funcionario.nome }}</td>
 				<td>{{ funcionario.idade }}</td>
+				<td>{{ funcionario.cargo }}</td>
 				<td>{{ funcionario.salario }} </td>
 			</tr>
 		{% endfor %}
@@ -51,15 +53,18 @@
 	        	<label for="nome-projeto">Idade:</label>
 	        	<input type="text" name="idade" class="form-control">	
 	        	
+	        	<label for="nome-projeto">Cargo:</label>
+	        	<input type="text" name="cargo" class="form-control">	
+	        	
 	        	<form class="form-inline">
 		        
 		        	<div class="form-group">
 				    	
-				    	<label for="exampleInputAmount">Salário: </label>
+				    	<label for="salario">Salário: </label>
 					    
 					    <div class="input-group">
 					      <div class="input-group-addon">R$</div>
-					      <input type="text" class="form-control" name="salario" id="exampleInputAmount" placeholder="Amount">
+					      <input type="text" class="form-control" name="salario" id="salario" placeholder="Salário">
 					      <div class="input-group-addon">.00</div>
 					    </div>
 
