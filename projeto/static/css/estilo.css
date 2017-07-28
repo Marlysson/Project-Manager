@@ -34,7 +34,12 @@
 }
 
 .item-input input[type="checkbox"], .item-input input[type="radio"]{
-	/*display: none;*/
+	display: none;
+}
+
+.item-input input:checked + label{
+	background: #398439;
+	color:white;
 }
 
 .tarefa a{

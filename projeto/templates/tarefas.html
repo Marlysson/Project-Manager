@@ -6,19 +6,18 @@
         <div class="panel-heading">
             <a href="{% url 'tarefa' tarefa.id %}"><strong>{{ tarefa.titulo|capfirst }} </strong></a>
         </div>
-        <div class="panel-body">{{ tarefa.descricao }}</div>
+
         <div class="panel-footer">
             
-        <ol class="breadcrumb">
-            <li><strong>Responsável:</strong> <span class="badge">{{ tarefa.responsavel.nome }}</span></li>
-            <li><strong>Projeto:</strong> <span class="badge">{{ tarefa.projeto.nome }}</span></li>
-            <li><strong>Requisitos:</strong> <span class="badge">{{ tarefa.pre_requisitos.count }}</span></li>
-            <button class="btn btn-success btn-xs pull-right"><span class="glyphicon glyphicon-play"></span>Iniciar atividade</button>
-        </ol>
-
-
-
+            <ol class="breadcrumb">
+                <li><strong>Responsável:</strong> <span class="badge">{{ tarefa.responsavel.nome }}</span></li>
+                <li><strong>Projeto:</strong> <span class="badge">{{ tarefa.projeto.nome }}</span></li>
+                <li><strong>Requisitos:</strong> <span class="badge">{{ tarefa.pre_requisitos.count }}</span></li>
+                <button class="btn btn-success btn-xs pull-right"><span class="glyphicon glyphicon-play"></span>Iniciar atividade</button>
+            </ol>
+            
         </div>
+
     </div>
 
     {% empty %}
@@ -62,10 +61,11 @@
                     <div class="pre-requisitos">
                             
                         {% for tarefa in tarefas %}
-                            <label for="{{ tarefa.nome|safe }}" class="btn btn-default">{{ tarefa.titulo }}</label>
 
                             <input type="checkbox" name="pre_requisito" 
-                                   value="{{ tarefa.id }}" id="{{tarefa.nome|safe}}" class="requisito">
+                                   value="{{ tarefa.id }}" id="{{tarefa.titulo|safe}}" class="requisito">
+
+                            <label for="{{ tarefa.titulo|safe }}" class="btn btn-default">{{ tarefa.titulo }}</label>
 
                         {% endfor %}
 
@@ -84,15 +84,15 @@
 
     				{% for projeto in projetos %}
     					
+                        <input 
+                            type="radio" name="projeto"
+                            value="{{projeto.id}}" id="{{projeto.nome}}">
+
                         <label
                             for="{{projeto.nome}}" 
                             class="btn btn-default projeto">
                                 {{ projeto.nome|truncatechars:19 }}
                         </label>
-
-    					<input 
-                            type="radio" name="projeto"
-                            value="{{projeto.id}}" id="{{projeto.nome}}">
 
     				{% endfor %}
                     </div>
@@ -105,13 +105,13 @@
                     <div class="funcionarios">
         			{% for funcionario in funcionarios %}
         				
+                        <input type="radio" name="funcionario"
+                            value="{{funcionario.id}}" id="{{funcionario.nome|safe}}">
+
         				<label for="{{funcionario.nome|safe}}" type="button"
                             class="btn btn-default funcionario">
                                 {{ funcionario.nome }}
                         </label>
-
-        				<input type="radio" name="funcionario"
-                            value="{{funcionario.id}}" id="{{funcionario.nome|safe}}">
 
         			{% endfor %}
                     </div>
