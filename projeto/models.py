@@ -15,22 +15,11 @@ class Projeto(models.Model):
     def __str__(self):
         return self.nome
 
-
-class Cargo(models.Model):
-    nome = models.CharField(max_length=50)
-
-    class Meta:
-        db_table = "funcao"
-
-    def __str__(self):
-        return self.nome
-
-
 class Funcionario(models.Model):
     nome = models.CharField(max_length=100)
     idade = models.IntegerField()
     salario = models.DecimalField(max_digits=9,decimal_places=2)
-    funcao = models.ForeignKey(funcao,on_delete=models.SET_NULL)
+    cargo = models.CharField(max_length=100)
 
     class Meta:
         db_table = "funcionario"
@@ -111,3 +100,12 @@ class Item(models.Model):
 
     def __str__(self):
         return "{}, {}".format(self.descricao,self.status)
+
+class Comentario(models.Model):
+
+    conteudo = models.TextField()
+    criado_por = models.ForeignKey(Funcionario,on_delete=models.CASCADE)
+    criado_em = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "comentario"
