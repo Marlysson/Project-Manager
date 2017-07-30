@@ -49,3 +49,16 @@
 .tarefa a:hover{
 	color:white;
 }
+
+.container_pre_requisitos{
+	margin-top:10px;
+}
+
+.container-comentario{
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+textarea{
+	margin-bottom:10px;
+}

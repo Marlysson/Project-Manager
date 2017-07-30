@@ -1,13 +1,12 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 
-from .models import Projeto, Funcionario, Tarefa
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+
+from .models import Projeto, Funcionario, Tarefa, Comentario
 from .forms import FuncionarioForm
 
 def index(request):
-	return render(request,"index.html",{})
-
-def projetos(request):
 	
 	projetos = Projeto.objects.all()
 
@@ -45,13 +44,17 @@ def tarefas(request):
 	tarefas = Tarefa.objects.all()
 	projetos = Projeto.objects.all()
 	funcionarios = Funcionario.objects.all()
-
+	
 	contexto = {"tarefas":tarefas,"projetos":projetos,"funcionarios":funcionarios}
 
 	return render(request,"tarefas.html",contexto)
 
 def tarefa(request,id_tarefa):
-	pass
+	
+	tarefa = Tarefa.objects.get(id=id_tarefa)
+
+	return render(request,"tarefa.html",{"tarefa":tarefa})
+
 	
 def nova_tarefa(request):
 
@@ -81,3 +84,71 @@ def nova_tarefa(request):
 
 
 	return redirect("tarefas")
+
+@require_http_methods(["POST"])
+def comentar(request,id_tarefa):
+
+	conteudo = request.POST.get("conteudo")
+
+	tarefa = Tarefa.objects.get(id=id_tarefa)
+	funcionario = get_usuario(request)
+
+	comentario = Comentario.objects.create(conteudo=conteudo,tarefa=tarefa,
+								criado_por=funcionario)
+
+	return redirect("tarefa",id_tarefa=id_tarefa)
+
+def iniciar_tarefa(request,id_tarefa):
+
+	tarefa = Tarefa.objects.get(id=id_tarefa)
+
+	pre_requisitos = tarefa.pre_requisitos.all()
+
+	print(pre_requisitos)
+
+	if len(pre_requisitos):
+
+		for requisito in pre_requisitos:
+			if requisito.status != 3:
+				return redirect("tarefas")
+
+		tarefa.iniciar()
+	else:
+		tarefa.iniciar()
+
+	return redirect("tarefas")
+
+def pausar_tarefa(request,id_tarefa):
+
+	tarefa = Tarefa.objects.get(id=id_tarefa)
+
+	tarefa.pausar()
+
+	return redirect("tarefas")
+
+def concluir_tarefa(request,id_tarefa):
+	
+	tarefa = Tarefa.objects.get(id=id_tarefa)
+
+	tarefa.concluir()
+
+	return redirect("tarefas")
+
+def deletar_tarefa(request,id_tarefa):
+	
+	tarefa = Tarefa.objects.get(id=id_tarefa)
+	tarefa.delete()
+
+	return redirect("tarefas")
+
+
+def permissao_iniciar(request,id_tarefa):
+
+	tarefa = Tarefa.objects.get(id=id_tarefa)
+
+	return JsonResponse({"permitido":tarefa.permitido_iniciar})
+
+
+def get_usuario(request):
+	return Funcionario.objects.get(id=1)
+

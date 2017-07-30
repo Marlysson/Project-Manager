@@ -1,5 +1,7 @@
 from django.db import models
+from django.utils import timezone
 
+from datetime import timedelta
 
 class Projeto(models.Model):
     nome = models.CharField(max_length=50)
@@ -43,41 +45,74 @@ class Equipe(models.Model):
 
 class Tarefa(models.Model):
 
+    STATUS_TAREFA = (
+        (0,"ABERTA"),
+        (1,"TRABALHANDO"),
+        (2,"PAUSADA"),
+        (3,"CONCLUíDA")
+    )
+
     titulo = models.CharField(max_length=50)
     descricao = models.CharField(max_length=100)
     data_conclusao = models.DateTimeField(null=True)
     projeto = models.ForeignKey(Projeto,on_delete=models.CASCADE,related_name="tarefas")
     horario_de_inicio_atual = models.DateTimeField(null=True)
-    duracao_total = models.DurationField(null=True,default=0)
+    duracao_total = models.DurationField(null=True,default=timedelta(seconds=0))
+    status = models.CharField(max_length=1,default=0,choices=STATUS_TAREFA)
     responsavel = models.ForeignKey(Funcionario,null=True)
     pre_requisito = models.ManyToManyField("self",null=True,
                                 symmetrical=False,
                                 related_name="pre_requisitos")
 
-    def iniciar(self):
+    @property
+    def is_open(self):
+        return self.status == 0
 
-        from datetime import datetime
+    @property
+    def is_running(self):
+        return self.status == 1
 
-        self.horario_inicio_atual = datetime.now()
+    @property
+    def is_paused(self):
+        return self.status == 2
+
+    @property
+    def is_done(self):
+        return self.status == 3
+
+    def is_done(self):
+        return self.status
+
+    def iniciar(self):    
+
+        self.horario_de_inicio_atual = timezone.now()
+        self.status = 1
 
         self.save()
 
     def concluir(self):
-        from datetime import datetime
-        
-        self.dataconclusao = datetime.now()
-        self.duracao_total += datetime.now() - self.dataconclusao
+
+        self.dataconclusao = timezone.now()
+        self.duracao_total += timezone.now() - self.dataconclusao
+        self.status = 3
 
         self.save()
 
     def pausar(self):
 
-        from datetime import datetime
-        agora = datetime.now()
+        diferenca = timezone.now() - self.horario_de_inicio_atual        
+        self.duracao_total += diferenca
 
-        self.duracao_total += agora - self.horario_inicio_atual
-
+        self.status = 2
         self.save()
+
+    @property
+    def permitido_iniciar(self):
+
+        for requisito in self.pre_requisitos:
+            if requisito.status != 3:
+                return False
+        return True
 
     class Meta:
         db_table = "tarefa"
@@ -116,8 +151,10 @@ class Item(models.Model):
 class Comentario(models.Model):
 
     conteudo = models.TextField()
+    tarefa = models.ForeignKey(Tarefa,on_delete=models.CASCADE,related_name="comentarios")
     criado_por = models.ForeignKey(Funcionario,on_delete=models.CASCADE)
     criado_em = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = "comentario"
+        ordering = ['-criado_em']
