@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load format_duration %}
+
+{% block conteudo %}
+
+<h2>{{ tarefa.titulo }}</h2>
+
+<p>{{ tarefa.descricao}}</p>
+
+<label class="btn btn-info btn-sm">{{ tarefa.responsavel}}</label>
+
+<ol class="breadcrumb container_pre_requisitos">
+	{% for requisito in tarefa.pre_requisitos.all %}
+		<li class="btn btn-success btn-sm">{{ requisito.titulo }}</li>
+	{% empty%}
+		<li class="btn btn-success btn-sm">Sem pré-requisitos</li>
+	{% endfor %}
+
+	<button class="btn btn-success btn-sm">
+	<span class="glyphicon glyphicon-plus"></span>
+	</button>
+
+</ol>
+
+Duração:<span class="badge"> {{ tarefa.duracao_total|duration }}</span>
+<div class="row container-comentario">
+
+	<form action="{% url 'comentar' tarefa.id %}" method="POST">
+		
+		{% csrf_token %}
+
+		<div class="col-lg-8">
+			<h4><span class="glyphicon glyphicon-comment"></span> Adicione um comentário</h4>
+			<textarea name="conteudo" class="form-control" id="comentario"></textarea>
+
+			<button class="btn btn-primary">Comentar</button>
+		</div>
+
+	</form>
+
+</div>
+
+
+{% for comentario in tarefa.comentarios.all %}
+	<div class="panel panel-primary panel-default">
+		<div class="panel-heading">{{ comentario.criado_por }} comentou à {{ comentario.criado_em|timesince}}</div>
+			<div class="panel-body">
+				{{ comentario.conteudo}}
+			</div>
+	</div>
+{% endfor %}
+
+{% endblock %}

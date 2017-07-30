@@ -1,21 +1,49 @@
 {% extends 'base.html' %}
 {% block conteudo %}
     
-    {% for tarefa in tarefas %}	
+    {% for tarefa in tarefas %} 
+         
         <div class="panel panel-primary tarefa">
         <div class="panel-heading">
             <a href="{% url 'tarefa' tarefa.id %}"><strong>{{ tarefa.titulo|capfirst }} </strong></a>
+
+            <a href="{% url 'deletar_tarefa' tarefa.id %}" class="btn btn-default btn-xs pull-right deletar_tarefa">
+                <span class="glyphicon glyphicon-remove" style="color:black"></span>
+            </a>
+
         </div>
 
         <div class="panel-footer">
-            
             <ol class="breadcrumb">
                 <li><strong>Responsável:</strong> <span class="badge">{{ tarefa.responsavel.nome }}</span></li>
                 <li><strong>Projeto:</strong> <span class="badge">{{ tarefa.projeto.nome }}</span></li>
                 <li><strong>Requisitos:</strong> <span class="badge">{{ tarefa.pre_requisitos.count }}</span></li>
-                <button class="btn btn-success btn-xs pull-right"><span class="glyphicon glyphicon-play"></span>Iniciar atividade</button>
+
+                {% if tarefa.is_open %}
+
+                    <a href="{% url 'iniciar_tarefa' tarefa.id %}" class="btn btn-success btn-xs pull-right iniciar_atividade"><span class="glyphicon glyphicon-play"></span>Iniciar atividade</a>
+
+                {% elif tarefa.is_running %}
+
+                    <a href="{% url 'concluir_tarefa' tarefa.id %}" class="btn btn-success btn-xs pull-right"><span class="glyphicon glyphicon-ok"></span>Concluir</a>
+
+                    <a href="{% url 'pausar_tarefa' tarefa.id %}" class="btn btn-danger btn-xs pull-right"><span class="glyphicon glyphicon-pause"></span>Pausar</a>                    
+
+                {% elif tarefa.is_paused %}
+
+                    <a href="{% url 'iniciar_tarefa' tarefa.id %}" class="btn btn-info btn-xs pull-right"><span class="glyphicon glyphicon-play"></span>Trabalhar</a>
+
+                   <a href="{% url 'concluir_tarefa' tarefa.id %}" class="btn btn-success btn-xs pull-right"><span class="glyphicon glyphicon-ok"></span>Concluir</a>
+
+                {% elif tarefa.is_done %}
+
+                    <button class="btn btn-success btn-xs pull-right">Concluída</button>
+
+                {% endif %}
+
+             
             </ol>
-            
+
         </div>
 
     </div>
