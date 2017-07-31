@@ -66,22 +66,20 @@ class Tarefa(models.Model):
 
     @property
     def is_open(self):
-        return self.status == 0
+        return self.status == '0'
 
     @property
     def is_running(self):
-        return self.status == 1
+        return self.status == '1'
 
     @property
     def is_paused(self):
-        return self.status == 2
+        return self.status == '2'
 
     @property
     def is_done(self):
-        return self.status == 3
+        return self.status == '3'
 
-    def is_done(self):
-        return self.status
 
     def iniciar(self):    
 
