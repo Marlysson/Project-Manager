@@ -1,0 +1,35 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Project-Manager</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/signin.css' %}">
+</head>
+<body>
+
+	<div class="wrapper">
+    	
+    	<form class="form-signin" method="post" action="{% url 'login' %}">       
+      		{% csrf_token %}
+	      	<h2 class="form-signin-heading">Por favor, logue-se</h2>
+	      	
+	      	<input type="text" class="form-control" name="email" placeholder="Email Address" required="" autofocus="" />
+	      	
+	      	<br>
+	      	<input type="password" class="form-control" name="password" placeholder="Password" required=""/>
+
+	      	<br>
+	      	<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>   
+
+	      	<br>
+	      	<a href="{% url 'cadastrar' %}" style="text-align:right;font-weight: bold;">CADASTRE-SE</a>
+    	</form>
+
+
+  </div>
+
+</body>
+</html>

@@ -1,4 +1,7 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, reverse
 
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
@@ -6,6 +9,40 @@ from django.views.decorators.http import require_http_methods
 from .models import Projeto, Funcionario, Tarefa, Comentario
 from .forms import FuncionarioForm
 
+def logar(request):
+
+	if request.method == 'POST':
+		email = request.POST.get("email")
+		password = request.POST.get("password")
+
+		user = User.objects.get(email=email)
+
+		if user:
+			user = authenticate(request,username=user.username,password=user.password)
+			login(request,user)
+			return redirect(reverse('projetos'))
+
+
+	return render(request,"login.html")
+
+def cadastrar(request):
+
+	if request.method == 'POST':
+		nome = request.POST.get("name")
+		username = request.POST.get("username")
+		email = request.POST.get("email")
+
+		if not User.objects.filter(email=email).exists():
+			User.objects.create_user(first_name=nome,username=username,email=email)
+			return redirect(reverse('login'))
+
+	return render(request,"cadastrar.html")
+
+def deslogar(request):
+	logout(request)
+	return redirect(reverse("login"))
+
+@login_required
 def index(request):
 	
 	projetos = Projeto.objects.all()

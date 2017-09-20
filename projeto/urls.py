@@ -3,6 +3,11 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+
+	url(r"^login/$",views.logar,name="login"),
+	url(r"^logout/$",views.deslogar,name="logout"),
+	url(r"^cadastrar/$",views.cadastrar,name="cadastrar"),
+
 	url(r"^$",views.index,name="projetos"),
 
 	url(r"^funcionarios$",views.funcionarios,name="funcionarios"),
