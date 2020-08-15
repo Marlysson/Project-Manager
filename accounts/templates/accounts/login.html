@@ -1,0 +1,20 @@
+{% extends 'base_login.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<form class="form" action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.auto_id }}" class="control-label">{{ field.label }}</label>
+        {% render_field field class='form-control' %}
+      </div>
+    {% endfor %}
+
+    <button id="id_submit" type="submit" class="btn btn-primary px-4">Entrar</button>
+
+    <a href="{% url 'register' %}" id="register"> Registrar-se </a>
+  </form>
+
+{% endblock %}

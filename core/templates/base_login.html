@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Project-Manager</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/estilo.css' %}">
+	{% block css %}
+	
+	{% endblock css %}
+</head>
+<body>
+<div class="col-md-8 col-md-offset-2" style="margin-top: 5px;">
+	{% include "includes/messages.html" %}
+</div>
+<div class="container-fluid
+			col-lg-8 col-lg-offset-2
+			col-md-8 col-md-offset-2
+			col-sm-10 col-sm-offset-1
+			col-xs-10 col-xs-offset-1">
+
+	<div class="header">
+		<h1 class="title-page">Project Manager</h1>
+	</div>
+
+		{% block content %}
+
+		{% endblock %}
+
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>

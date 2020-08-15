@@ -1,0 +1,31 @@
+{% load i18n %}
+
+{% if messages %}
+    {% for message in messages %}
+    {% if message.tags %}
+    <div class="alert alert-{% if message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% elif message.tags == 'error' %}danger{% else %}info{% endif %}">
+          <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">×</span>
+              <span class="sr-only">Close</span>
+          </button>
+        <p class="text-{{ message.tags }}">
+              <strong>
+                  {% if message.tags == 'success' %}
+                     {% trans "Feito!  " %}
+                      <i class="ace-icon fa fa-check bigger-110 green"></i>
+                    {% elif message.tags == 'warning' %}
+                       {% trans "Aviso!  " %}
+                        <i class="ace-icon fa fa-check bigger-110 warning"></i>
+                      {% elif message.tags == 'error' %}
+                         {% trans "Erro!  " %}
+                             <i class="ace-icon fa fa-times bigger-110 red"></i>
+                  {% else %}
+                      <i class="ace-icon fa fa-times bigger-110"></i>
+                  {% endif %}
+              </strong>
+              {{ message }}
+          </p>
+    </div>
+   {% endif %}
+   {% endfor %}
+{% endif %}

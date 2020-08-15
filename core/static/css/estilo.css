@@ -1,0 +1,64 @@
+*{
+	margin:0;
+	padding:0;
+}
+
+.title-page{
+	margin-bottom:30px;
+	text-decoration: none;
+}
+
+.row .nav-tabs{
+	margin-bottom:20px;
+}
+
+.breadcrumb{
+	margin:0;
+	padding:0;
+}
+
+.pre-requisitos{
+	display: none;
+}
+
+.active-pre-requisitos{
+	display: block;
+}
+
+.item-input{
+	margin-bottom:20px;
+}
+
+.projetos,.funcionarios{
+	display: block;
+}
+
+.item-input input[type="checkbox"], .item-input input[type="radio"]{
+	display: none;
+}
+
+.item-input input:checked + label{
+	background: #398439;
+	color:white;
+}
+
+.tarefa a{
+	color:white;
+}
+
+.tarefa a:hover{
+	color:white;
+}
+
+.container_pre_requisitos{
+	margin-top:10px;
+}
+
+.container-comentario{
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+textarea{
+	margin-bottom:10px;
+}

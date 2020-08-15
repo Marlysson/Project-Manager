@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	
+	{% if funcionarios.count > 0 %}
+
+	<table class="table table-striped">
+  		
+		<tr>
+			<td><strong>Nome</strong></td>
+			<td><strong>Idade</strong></td>
+			<td><strong>Cargo</strong></td>
+			<td><strong>Salário</strong></td>
+		</tr>
+
+		{% for funcionario in funcionarios %}
+			<tr>
+				<td>{{ funcionario.nome }}</td>
+				<td>{{ funcionario.idade }}</td>
+				<td>{{ funcionario.cargo }}</td>
+				<td>{{ funcionario.salario }} </td>
+			</tr>
+		{% endfor %}
+
+	</table>
+
+	{% else %}
+		
+		<p>Não há funcionarios ainda.</p>
+
+	{% endif %}
+
+<button class="btn btn-success btn-sm" data-target="#novo-projeto" data-toggle="modal">Novo funcionário</button>
+
+
+<div class="modal fade" id="novo-projeto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Crie um novo funcionário</h4>
+      </div>
+      
+      	<form method="post" action="{% url 'novo_funcionario' %}">
+	      
+	      {% csrf_token %}
+
+	      <div class="modal-body">    
+      			
+	        	<label for="nome-projeto">Nome:</label>
+	        	<input type="text" name="nome" class="form-control">	 				
+
+	        	<label for="nome-projeto">Idade:</label>
+	        	<input type="text" name="idade" class="form-control">	
+	        	
+	        	<label for="nome-projeto">Cargo:</label>
+	        	<input type="text" name="cargo" class="form-control">	
+	        	
+	        	<form class="form-inline">
+		        
+		        	<div class="form-group">
+				    	
+				    	<label for="salario">Salário: </label>
+					    
+					    <div class="input-group">
+					      <div class="input-group-addon">R$</div>
+					      <input type="text" class="form-control" name="salario" id="salario" placeholder="Salário">
+					      <div class="input-group-addon">.00</div>
+					    </div>
+
+				  	</div>
+			</div>
+
+
+	      	<div class="modal-footer">
+
+	        	<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+	        	<button type="submit" class="btn btn-primary">Criar</button>
+
+	      	</div>
+		  	
+	  	</form>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	
+	{% for projeto in projetos %}
+
+	<div class="panel panel-primary">
+		<div class="panel-heading"><strong>{{ projeto.nome|capfirst }} </strong></div>
+		<div class="panel-body">{{ projeto.descricao }}</div>
+		<div class="panel-footer">
+			
+		<ol class="breadcrumb">
+			<li><strong>Tarefas:</strong> <span class="badge">{{ projeto.tarefas.count }}</span></li>
+		</ol>
+
+		</div>
+	</div>
+
+	{% empty %}
+
+		<p>Ainda não há projetos. Aproveite para criar um.</p>
+
+	{% endfor %}
+
+	<button class="btn btn-success btn-sm" data-target="#novo-projeto" data-toggle="modal">Novo projeto</button>
+
+
+<div class="modal fade" id="novo-projeto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Crie um novo projeto</h4>
+      </div>
+      
+      <form method="post" action="{% url 'novo_projeto' %}">
+	      
+	      {% csrf_token %}
+	      
+	      <div class="modal-body">    
+      			
+      			<label for="nome-projeto">Nome do projeto:</label>
+	        	<input type="text" name="nome" class="form-control">	
+
+	        	<label for="nome-projeto">Descrição do projeto:</label>
+	        	<textarea class="form-control" name="descricao"></textarea>
+
+	      </div>
+
+	      <div class="modal-footer">
+
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+	        <button type="submit" class="btn btn-primary">Criar</button>
+
+	      </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
